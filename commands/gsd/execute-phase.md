@@ -106,9 +106,37 @@ Phase: $ARGUMENTS
    - Verifier checks must_haves against actual codebase (not SUMMARY claims)
    - Creates VERIFICATION.md with detailed report
    - Route by status:
-     - `passed` → continue to step 8
+     - `passed` → continue to step 7.5
      - `human_needed` → present items, get approval or feedback
      - `gaps_found` → present gaps, offer `/gsd:plan-phase {X} --gaps`
+
+7.5. **Run code simplification**
+   After verification passes, spawn `code-simplifier` to review phase changes:
+
+   ```bash
+   # Get files changed in this phase (all plan commits)
+   CHANGED_FILES=$(git diff --name-only $(git log --oneline --grep="feat(${PHASE_NUM}" --grep="fix(${PHASE_NUM}" --grep="refactor(${PHASE_NUM}" --format=%H | tail -1)^..HEAD -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.swift' 2>/dev/null | head -50)
+   ```
+
+   Spawn `code-simplifier` subagent:
+   ```
+   Task(
+     prompt="Review and simplify the following files changed in phase {phase_number}:
+
+     Files: {changed_files}
+
+     Focus on:
+     - Reducing unnecessary complexity
+     - Removing dead code
+     - Simplifying conditionals
+     - Improving readability
+
+     Make atomic commits for each simplification with format: refactor({phase}): simplify {description}",
+     subagent_type="pr-review-toolkit:code-simplifier"
+   )
+   ```
+
+   **Skip if:** No code files changed, or `CHANGED_FILES` is empty.
 
 8. **Update roadmap and state**
    - Update ROADMAP.md, STATE.md
@@ -332,6 +360,7 @@ After all plans in phase complete (step 7):
 - [ ] Each plan has SUMMARY.md
 - [ ] Phase goal verified (must_haves checked against codebase)
 - [ ] VERIFICATION.md created in phase directory
+- [ ] Code simplification run on changed files (code-simplifier agent)
 - [ ] STATE.md reflects phase completion
 - [ ] ROADMAP.md updated
 - [ ] REQUIREMENTS.md updated (phase requirements marked Complete)

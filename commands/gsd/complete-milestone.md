@@ -6,7 +6,10 @@ argument-hint: <version>
 allowed-tools:
   - Read
   - Write
+  - Edit
   - Bash
+  - Glob
+  - Skill
 ---
 
 <objective>
@@ -107,7 +110,27 @@ Output: Milestone archived (roadmap + requirements), PROJECT.md evolved, git tag
    - Tag: `git tag -a v{{version}} -m "[milestone summary]"`
    - Ask about pushing tag
 
-8. **Offer next steps:**
+8. **Run comprehensive PR review:**
+
+   Before finalizing the milestone, run a full code review on all milestone changes:
+
+   - Invoke `/pr-review-toolkit:review-pr` skill
+   - This spawns multiple specialized agents to check:
+     - Code quality and style (code-reviewer)
+     - Comment accuracy (comment-analyzer)
+     - Test coverage (pr-test-analyzer)
+     - Silent failures and error handling (silent-failure-hunter)
+     - Type design quality (type-design-analyzer)
+   - Review the findings and address any critical issues before proceeding
+   - Minor issues can be noted as tech debt for next milestone
+
+9. **Update agent knowledge:**
+
+   - Run `/update-agent-knowledge` to capture learnings from this milestone
+   - Review session for patterns, gotchas, and context
+   - Add relevant learnings to CLAUDE.md
+
+10. **Offer next steps:**
    - `/gsd:new-milestone` — start next milestone (questioning → research → requirements → roadmap)
 
 </process>
@@ -121,6 +144,8 @@ Output: Milestone archived (roadmap + requirements), PROJECT.md evolved, git tag
 - PROJECT.md updated with current state
 - Git tag v{{version}} created
 - Commit successful
+- PR review completed (/pr-review-toolkit:review-pr) with critical issues addressed
+- CLAUDE.md updated with milestone learnings (/update-agent-knowledge)
 - User knows next steps (including need for fresh requirements)
   </success_criteria>
 

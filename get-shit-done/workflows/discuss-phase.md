@@ -78,22 +78,31 @@ Gray areas are **implementation decisions the user cares about** — things that
    - Something users RUN → invocation, output, behavior modes matter
    - Something users READ → structure, tone, depth, flow matter
    - Something being ORGANIZED → criteria, grouping, handling exceptions matter
-3. **Generate phase-specific gray areas** — Not generic categories, but concrete decisions for THIS phase
+3. **Check behavioral dimensions** — These often surface decisions users haven't explicitly considered:
+   - **States:** What modes exist? (loading, empty, error, offline, premium)
+   - **Transitions:** What happens when state changes? (on login, on timeout, on upgrade)
+   - **Failures:** What if [action] fails? (retry, notify, degrade, block)
+   - **Boundaries:** What are the limits? (max items, timeouts, empty states)
+4. **Generate phase-specific gray areas** — Not generic categories, but concrete decisions for THIS phase
 
 **Don't use generic category labels** (UI, UX, Behavior). Generate specific gray areas:
 
 ```
 Phase: "User authentication"
 → Session handling, Error responses, Multi-device policy, Recovery flow
+→ Behavioral: What if login fails? What's true while "logging in"? Account lockout policy?
 
 Phase: "Organize photo library"
 → Grouping criteria, Duplicate handling, Naming convention, Folder structure
+→ Behavioral: What if folder is empty? What if name conflicts? Undo support?
 
 Phase: "CLI for database backups"
 → Output format, Flag design, Progress reporting, Error recovery
+→ Behavioral: What if connection drops mid-backup? Timeout handling? Partial success?
 
-Phase: "API documentation"
-→ Structure/navigation, Code examples depth, Versioning approach, Interactive elements
+Phase: "Data sync"
+→ Conflict resolution, Sync frequency, Progress indication
+→ Behavioral: What's visible while syncing? What if offline mid-sync? Retry policy?
 ```
 
 **The key question:** What decisions would change the outcome that the user should weigh in on?

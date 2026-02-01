@@ -814,6 +814,30 @@ Confirm: "Committed: chore: complete v[X.Y] milestone"
 
 </step>
 
+<step name="update_agent_knowledge">
+
+Capture learnings from this milestone before moving on.
+
+**Invoke the update-agent-knowledge skill:**
+
+```
+/update-agent-knowledge
+```
+
+This reviews the session for patterns, gotchas, and context that would help future Claude sessions work more effectively. Learnings are added to CLAUDE.md.
+
+**What to look for:**
+- Commands or patterns discovered during the milestone
+- Environment quirks or workarounds
+- Code patterns that should be documented
+- Technical decisions with non-obvious rationale
+
+**After completing the skill:**
+- Confirm any additions were approved and applied
+- Continue to offer_next step
+
+</step>
+
 <step name="offer_next">
 
 ```
@@ -897,6 +921,7 @@ Milestone completion is successful when:
 - [ ] REQUIREMENTS.md deleted (fresh for next milestone)
 - [ ] STATE.md updated with fresh project reference
 - [ ] Git tag created (v[X.Y])
+- [ ] CLAUDE.md updated with milestone learnings (/update-agent-knowledge)
 - [ ] Milestone commit made (includes archive files and deletion)
 - [ ] User knows next step (/gsd:new-milestone)
 

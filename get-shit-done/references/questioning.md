@@ -109,6 +109,39 @@ Four things. If they volunteer more, capture it.
 
 </context_checklist>
 
+<behavioral_checklist>
+
+**Surface behaviors, not just features.** LLMs build better when requirements are behavioral.
+
+After covering the basics, probe for these when relevant. Don't force — weave naturally.
+
+**States and modes:**
+- "Are there different modes or states?" (online/offline, draft/published, free/premium)
+- "What's true while [state]?" (while syncing, while loading, while offline)
+- "What changes when [transition]?" (on login, on timeout, on upgrade)
+
+**Triggers and events:**
+- "What causes [action] to happen?" (user action, time, external event)
+- "When [event], what should happen?" (on first launch, on payment failure, on network drop)
+
+**Unwanted behavior:**
+- "What should definitely NOT happen?" (data loss, silent failures, security issues)
+- "What's the worst case scenario?" (surfaces critical error handling)
+- "If [X] fails, what then?" (retry, notify, degrade, block)
+
+**Boundaries and limits:**
+- "What are the limits?" (max items, rate limits, file sizes)
+- "What happens at the edge?" (empty state, max capacity, timeout)
+
+**Example probes:**
+- User describes a sync feature → "What happens if you're offline mid-sync?"
+- User describes uploads → "Is there a size limit? What happens if it's exceeded?"
+- User describes payments → "What if payment fails? What if it's disputed?"
+
+These often surface requirements the user hasn't consciously considered. When they say "oh, good question" — you've found a gap worth filling.
+
+</behavioral_checklist>
+
 <decision_gate>
 
 When you could write a clear PROJECT.md, offer to proceed:
