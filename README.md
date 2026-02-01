@@ -1,3 +1,14 @@
+> **Fork with Enhancements**
+>
+> This fork adds:
+> - **EARS-inspired behavioral requirements** — When/While/If patterns for states, transitions, and failures
+> - **Code simplifier** at end of phases — automatically reduces complexity after verification
+> - **PR review toolkit** at end of milestones — comprehensive code review before completion
+>
+> Upstream: [glittercowboy/get-shit-done](https://github.com/glittercowboy/get-shit-done) · See [Customizations](#customizations) below.
+
+---
+
 <div align="center">
 
 # GET SHIT DONE
@@ -596,6 +607,41 @@ These community ports pioneered multi-runtime support:
 |---------|----------|-------------|
 | [gsd-opencode](https://github.com/rokicool/gsd-opencode) | OpenCode | Original OpenCode adaptation |
 | [gsd-gemini](https://github.com/uberfuzzy/gsd-gemini) | Gemini CLI | Original Gemini adaptation |
+
+---
+
+## Customizations
+
+This fork includes the following enhancements over upstream GSD:
+
+### EARS-Inspired Behavioral Requirements
+
+Standard requirements capture features: "User can upload avatar"
+
+Behavioral patterns capture what happens in different states:
+- `When [event], [outcome]` — "When signup succeeds, user receives verification email"
+- `While [state], [behavior]` — "While offline, app queues changes for sync"
+- `If [condition], [response]` — "If login fails 3 times, account locks for 15 minutes"
+
+**Modified files:**
+- `get-shit-done/templates/requirements.md` — Pattern reference and examples
+- `get-shit-done/references/questioning.md` — Behavioral checklist for discovery
+- `get-shit-done/templates/research-project/FEATURES.md` — Critical behaviors research
+- `get-shit-done/workflows/discuss-phase.md` — Behavioral dimensions in gray areas
+
+### Code Simplifier Integration
+
+After phase verification passes, `/gsd:execute-phase` spawns the `code-simplifier` agent to:
+- Reduce unnecessary complexity
+- Remove dead code
+- Simplify conditionals
+- Improve readability
+
+### Milestone Quality Gates
+
+`/gsd:complete-milestone` adds two quality checks:
+1. **PR Review** — Runs `/pr-review-toolkit:review-pr` for comprehensive code review
+2. **Knowledge Capture** — Runs `/update-agent-knowledge` to document learnings in CLAUDE.md
 
 ---
 
