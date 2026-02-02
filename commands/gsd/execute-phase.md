@@ -12,6 +12,7 @@ allowed-tools:
   - Task
   - TodoWrite
   - AskUserQuestion
+  - Skill
 ---
 
 <objective>
@@ -137,6 +138,16 @@ Phase: $ARGUMENTS
    ```
 
    **Skip if:** No code files changed, or `CHANGED_FILES` is empty.
+
+7.6. **Update agent knowledge**
+   After code simplification, capture learnings from this phase:
+
+   - Invoke `/update-agent-knowledge` skill
+   - Review the phase execution for patterns, gotchas, and context
+   - Add relevant learnings to CLAUDE.md
+
+   This runs while the conversation has full context of what was built and why,
+   unlike at milestone completion which often runs in a fresh session.
 
 8. **Update roadmap and state**
    - Update ROADMAP.md, STATE.md
@@ -361,6 +372,7 @@ After all plans in phase complete (step 7):
 - [ ] Phase goal verified (must_haves checked against codebase)
 - [ ] VERIFICATION.md created in phase directory
 - [ ] Code simplification run on changed files (code-simplifier agent)
+- [ ] CLAUDE.md updated with phase learnings (/update-agent-knowledge)
 - [ ] STATE.md reflects phase completion
 - [ ] ROADMAP.md updated
 - [ ] REQUIREMENTS.md updated (phase requirements marked Complete)

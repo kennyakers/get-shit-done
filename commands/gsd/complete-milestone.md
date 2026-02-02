@@ -124,13 +124,7 @@ Output: Milestone archived (roadmap + requirements), PROJECT.md evolved, git tag
    - Review the findings and address any critical issues before proceeding
    - Minor issues can be noted as tech debt for next milestone
 
-9. **Update agent knowledge:**
-
-   - Run `/update-agent-knowledge` to capture learnings from this milestone
-   - Review session for patterns, gotchas, and context
-   - Add relevant learnings to CLAUDE.md
-
-10. **Offer next steps:**
+9. **Offer next steps:**
    - `/gsd:new-milestone` — start next milestone (questioning → research → requirements → roadmap)
 
 </process>
@@ -145,7 +139,6 @@ Output: Milestone archived (roadmap + requirements), PROJECT.md evolved, git tag
 - Git tag v{{version}} created
 - Commit successful
 - PR review completed (/pr-review-toolkit:review-pr) with critical issues addressed
-- CLAUDE.md updated with milestone learnings (/update-agent-knowledge)
 - User knows next steps (including need for fresh requirements)
   </success_criteria>
 
