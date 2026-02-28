@@ -712,7 +712,7 @@ Behavioral patterns capture what happens in different states:
 ### Post-Phase Quality Gates
 
 After phase verification passes, `/gsd:execute-phase` runs two additional steps:
-1. **Code Simplifier** — Spawns `code-simplifier` agent to reduce complexity, remove dead code, and improve readability
+1. **Code Simplifier** — Runs `/simplify` skill (3 parallel review agents for reuse, quality, and efficiency) to reduce complexity and fix issues
 2. **Knowledge Capture** — Runs `/update-agent-knowledge` to document learnings in CLAUDE.md while the session has full context of what was built
 
 ### Milestone Quality Gate

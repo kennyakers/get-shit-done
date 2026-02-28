@@ -44,30 +44,9 @@ Preserve all workflow gates (wave execution, checkpoint handling, verification, 
 
 **Post-verification step A: Run code simplification**
 
-```bash
-# Get files changed in this phase (all plan commits)
-CHANGED_FILES=$(git diff --name-only $(git log --oneline --grep="feat(${PHASE_NUM}" --grep="fix(${PHASE_NUM}" --grep="refactor(${PHASE_NUM}" --format=%H | tail -1)^..HEAD -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.swift' 2>/dev/null | head -50)
-```
+Invoke the `/simplify` skill. This runs three parallel review agents (reuse, quality, efficiency) on the git diff and fixes all issues found.
 
-Spawn `code-simplifier` subagent:
-```
-Task(
-  prompt="Review and simplify the following files changed in phase {phase_number}:
-
-  Files: {changed_files}
-
-  Focus on:
-  - Reducing unnecessary complexity
-  - Removing dead code
-  - Simplifying conditionals
-  - Improving readability
-
-  Make atomic commits for each simplification with format: refactor({phase}): simplify {description}",
-  subagent_type="pr-review-toolkit:code-simplifier"
-)
-```
-
-Skip if no code files changed or `CHANGED_FILES` is empty.
+Skip if no code files changed (check `git diff --stat` first).
 
 **Post-verification step B: Update agent knowledge**
 
@@ -86,7 +65,7 @@ unlike at milestone completion which often runs in a fresh session.
 - [ ] Each plan has SUMMARY.md
 - [ ] Phase goal verified (must_haves checked against codebase)
 - [ ] VERIFICATION.md created in phase directory
-- [ ] Code simplification run on changed files (code-simplifier agent)
+- [ ] Code simplification run on changed files (/simplify)
 - [ ] CLAUDE.md updated with phase learnings (/update-agent-knowledge)
 - [ ] STATE.md reflects phase completion
 - [ ] ROADMAP.md updated
