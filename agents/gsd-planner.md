@@ -859,11 +859,11 @@ Output: [Working, tested feature]
 
 ## Red-Green-Refactor Cycle
 
-**RED:** Create test file → write test describing expected behavior → run test (MUST fail) → commit: `test({phase}-{plan}): add failing test for [feature]`
+**RED:** Create test file → write test describing expected behavior → run test (MUST fail) → commit: `test({scope}): add failing test for [feature]`
 
-**GREEN:** Write minimal code to pass → run test (MUST pass) → commit: `feat({phase}-{plan}): implement [feature]`
+**GREEN:** Write minimal code to pass → run test (MUST pass) → commit: `feat({scope}): implement [feature]`
 
-**REFACTOR (if needed):** Clean up → run tests (MUST pass) → commit: `refactor({phase}-{plan}): clean up [feature]`
+**REFACTOR (if needed):** Clean up → run tests (MUST pass) → commit: `refactor({scope}): clean up [feature]`
 
 Each TDD plan produces 2-3 atomic commits.
 

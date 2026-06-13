@@ -96,18 +96,18 @@ After completion, create SUMMARY.md with:
 2. Write test describing expected behavior (from `<behavior>` element)
 3. Run test - it MUST fail
 4. If test passes: feature exists or test is wrong. Investigate.
-5. Commit: `test({phase}-{plan}): add failing test for [feature]`
+5. Commit: `test({scope}): add failing test for [feature]`
 
 **GREEN - Implement to pass:**
 1. Write minimal code to make test pass
 2. No cleverness, no optimization - just make it work
 3. Run test - it MUST pass
-4. Commit: `feat({phase}-{plan}): implement [feature]`
+4. Commit: `feat({scope}): implement [feature]`
 
 **REFACTOR (if needed):**
 1. Clean up implementation if obvious improvements exist
 2. Run tests - MUST still pass
-3. Only commit if changes made: `refactor({phase}-{plan}): clean up [feature]`
+3. Only commit if changes made: `refactor({scope}): clean up [feature]`
 
 **Result:** Each TDD plan produces 2-3 atomic commits.
 </execution_flow>
@@ -215,19 +215,19 @@ Framework setup is a one-time cost included in the first TDD plan's RED phase.
 TDD plans produce 2-3 atomic commits (one per phase):
 
 ```
-test(08-02): add failing test for email validation
+test(auth): add failing test for email validation
 
 - Tests valid email formats accepted
 - Tests invalid formats rejected
 - Tests empty input handling
 
-feat(08-02): implement email validation
+feat(auth): implement email validation
 
 - Regex pattern matches RFC 5322
 - Returns boolean for validity
 - Handles edge cases (empty, null)
 
-refactor(08-02): extract regex to constant (optional)
+refactor(auth): extract regex to constant (optional)
 
 - Moved pattern to EMAIL_REGEX constant
 - No behavior changes
@@ -238,7 +238,7 @@ refactor(08-02): extract regex to constant (optional)
 - Standard plans: 1 commit per task, 2-4 commits per plan
 - TDD plans: 2-3 commits for single feature
 
-Both follow same format: `{type}({phase}-{plan}): {description}`
+Both follow same format: `{type}({scope}): {description}`
 
 **Benefits:**
 - Each commit independently revertable

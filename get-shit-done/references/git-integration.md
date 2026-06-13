@@ -11,15 +11,15 @@ The git log should read like a changelog of what shipped, not a diary of plannin
 
 <commit_points>
 
-| Event                   | Commit? | Why                                              |
-| ----------------------- | ------- | ------------------------------------------------ |
-| BRIEF + ROADMAP created | YES     | Project initialization                           |
-| PLAN.md created         | NO      | Intermediate - commit with plan completion       |
-| RESEARCH.md created     | NO      | Intermediate                                     |
-| DISCOVERY.md created    | NO      | Intermediate                                     |
-| **Task completed**      | YES     | Atomic unit of work (1 commit per task)         |
-| **Plan completed**      | YES     | Metadata commit (SUMMARY + STATE + ROADMAP)     |
-| Handoff created         | YES     | WIP state preserved                              |
+| Event                   | Commit? | Why                                         |
+| ----------------------- | ------- | ------------------------------------------- |
+| BRIEF + ROADMAP created | YES     | Project initialization                      |
+| PLAN.md created         | NO      | Intermediate - commit with plan completion  |
+| RESEARCH.md created     | NO      | Intermediate                                |
+| DISCOVERY.md created    | NO      | Intermediate                                |
+| **Task completed**      | YES     | Atomic unit of work (1 commit per task)     |
+| **Plan completed**      | YES     | Metadata commit (SUMMARY + STATE + ROADMAP) |
+| Handoff created         | YES     | WIP state preserved                         |
 
 </commit_points>
 
@@ -66,7 +66,7 @@ Each task gets its own commit immediately after completion.
 > The orchestrator validates hooks once after all agents complete.
 
 ```
-{type}({phase}-{plan}): {task-name}
+{type}({scope}): {task-name}
 
 - [Key change 1]
 - [Key change 2]
@@ -74,6 +74,7 @@ Each task gets its own commit immediately after completion.
 ```
 
 **Commit types:**
+
 - `feat` - New feature/functionality
 - `fix` - Bug fix
 - `test` - Test-only (TDD RED phase)
@@ -81,12 +82,14 @@ Each task gets its own commit immediately after completion.
 - `perf` - Performance improvement
 - `chore` - Dependencies, config, tooling
 
+**Scope:** the affected package / area / module (e.g. `api`, `workers`, `ingest-graph`, `infra`, `auth`) — NEVER the phase or plan number. The git log should read like a product changelog, not a planning tracker.
+
 **Examples:**
 
 ```bash
 # Standard task
 git add src/api/auth.ts src/types/user.ts
-git commit -m "feat(08-02): create user registration endpoint
+git commit -m "feat(auth): create user registration endpoint
 
 - POST /auth/register validates email and password
 - Checks for duplicate users
@@ -95,7 +98,7 @@ git commit -m "feat(08-02): create user registration endpoint
 
 # TDD task - RED phase
 git add src/__tests__/jwt.test.ts
-git commit -m "test(07-02): add failing test for JWT generation
+git commit -m "test(auth): add failing test for JWT generation
 
 - Tests token contains user ID claim
 - Tests token expires in 1 hour
@@ -104,7 +107,7 @@ git commit -m "test(07-02): add failing test for JWT generation
 
 # TDD task - GREEN phase
 git add src/utils/jwt.ts
-git commit -m "feat(07-02): implement JWT generation
+git commit -m "feat(auth): implement JWT generation
 
 - Uses jose library for signing
 - Includes user ID and expiry claims
@@ -120,7 +123,7 @@ git commit -m "feat(07-02): implement JWT generation
 After all tasks committed, one final metadata commit captures plan completion.
 
 ```
-docs({phase}-{plan}): complete [plan-name] plan
+docs({scope}): complete [plan-name] plan
 
 Tasks completed: [N]/[N]
 - [Task 1 name]
@@ -133,7 +136,7 @@ SUMMARY: .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md
 What to commit:
 
 ```bash
-node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-PLAN.md .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md
+node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs({scope}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-PLAN.md .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md
 ```
 
 **Note:** Code files NOT included - already committed per-task.
@@ -162,6 +165,7 @@ node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" commit "wip: [phase-name] p
 <example_log>
 
 **Old approach (per-plan commits):**
+
 ```
 a7f2d1 feat(checkout): Stripe payments with webhook verification
 3e9c4b feat(products): catalog with search, filters, and pagination
@@ -171,32 +175,33 @@ a7f2d1 feat(checkout): Stripe payments with webhook verification
 ```
 
 **New approach (per-task commits):**
+
 ```
 # Phase 04 - Checkout
-1a2b3c docs(04-01): complete checkout flow plan
-4d5e6f feat(04-01): add webhook signature verification
-7g8h9i feat(04-01): implement payment session creation
-0j1k2l feat(04-01): create checkout page component
+1a2b3c docs(checkout): complete checkout flow plan
+4d5e6f feat(checkout): add webhook signature verification
+7g8h9i feat(checkout): implement payment session creation
+0j1k2l feat(checkout): create checkout page component
 
 # Phase 03 - Products
-3m4n5o docs(03-02): complete product listing plan
-6p7q8r feat(03-02): add pagination controls
-9s0t1u feat(03-02): implement search and filters
-2v3w4x feat(03-01): create product catalog schema
+3m4n5o docs(products): complete product listing plan
+6p7q8r feat(products): add pagination controls
+9s0t1u feat(products): implement search and filters
+2v3w4x feat(products): create product catalog schema
 
 # Phase 02 - Auth
-5y6z7a docs(02-02): complete token refresh plan
-8b9c0d feat(02-02): implement refresh token rotation
-1e2f3g test(02-02): add failing test for token refresh
-4h5i6j docs(02-01): complete JWT setup plan
-7k8l9m feat(02-01): add JWT generation and validation
-0n1o2p chore(02-01): install jose library
+5y6z7a docs(auth): complete token refresh plan
+8b9c0d feat(auth): implement refresh token rotation
+1e2f3g test(auth): add failing test for token refresh
+4h5i6j docs(auth): complete JWT setup plan
+7k8l9m feat(auth): add JWT generation and validation
+0n1o2p chore(auth): install jose library
 
 # Phase 01 - Foundation
-3q4r5s docs(01-01): complete scaffold plan
-6t7u8v feat(01-01): configure Tailwind and globals
-9w0x1y feat(01-01): set up Prisma with database
-2z3a4b feat(01-01): create Next.js 15 project
+3q4r5s docs(foundation): complete scaffold plan
+6t7u8v feat(foundation): configure Tailwind and globals
+9w0x1y feat(foundation): set up Prisma with database
+2z3a4b feat(foundation): create Next.js 15 project
 
 # Initialization
 5c6d7e docs: initialize ecommerce-app (5 phases)
@@ -209,6 +214,7 @@ Each plan produces 2-4 commits (tasks + metadata). Clear, granular, bisectable.
 <anti_patterns>
 
 **Still don't commit (intermediate artifacts):**
+
 - PLAN.md creation (commit with plan completion)
 - RESEARCH.md (intermediate)
 - DISCOVERY.md (intermediate)
@@ -216,6 +222,7 @@ Each plan produces 2-4 commits (tasks + metadata). Clear, granular, bisectable.
 - "Fixed typo in roadmap"
 
 **Do commit (outcomes):**
+
 - Each task completion (feat/fix/test/refactor)
 - Plan completion metadata (docs)
 - Project initialization (docs)
@@ -229,22 +236,26 @@ Each plan produces 2-4 commits (tasks + metadata). Clear, granular, bisectable.
 ## Why Per-Task Commits?
 
 **Context engineering for AI:**
+
 - Git history becomes primary context source for future Claude sessions
-- `git log --grep="{phase}-{plan}"` shows all work for a plan
+- `git log <base>..HEAD` (the phase branch range) shows all work for a phase — GSD commits use semantic area scopes, not plan-number tags
 - `git diff <hash>^..<hash>` shows exact changes per task
 - Less reliance on parsing SUMMARY.md = more context for actual work
 
 **Failure recovery:**
+
 - Task 1 committed ✅, Task 2 failed ❌
 - Claude in next session: sees task 1 complete, can retry task 2
 - Can `git reset --hard` to last successful task
 
 **Debugging:**
+
 - `git bisect` finds exact failing task, not just failing plan
 - `git blame` traces line to specific task context
 - Each commit is independently revertable
 
 **Observability:**
+
 - Solo developer + Claude workflow benefits from granular attribution
 - Atomic commits are git best practice
 - "Commit noise" irrelevant when consumer is Claude, not humans
@@ -284,7 +295,7 @@ Set `commit_docs: false` so planning docs stay local and are not committed to an
 Instead of the standard `commit` command, use `commit-to-subrepo` when `sub_repos` is configured:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit-to-subrepo "feat(02-01): add user API" \
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit-to-subrepo "feat(auth): add user API" \
   --files backend/src/api/users.ts backend/src/types/user.ts frontend/src/components/UserForm.tsx
 ```
 
