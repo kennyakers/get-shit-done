@@ -254,7 +254,7 @@ If findings skills exist, read SKILL.md and reference files; extract validated p
 
 If raw spikes/sketches exist but no findings skill, note: `⚠ Unpackaged spikes/sketches detected — run /gsd:spike --wrap-up or /gsd:sketch --wrap-up to make findings available.`
 
-Build internal `<prior_decisions>` with sections for Project-Level (from PROJECT.md / REQUIREMENTS.md), From Prior Phases (per-phase decisions), and From Spike/Sketch Findings (validated patterns, landmines, design decisions).
+Build internal `<prior_decisions>` with sections for Project-Level (from PROJECT.md / REQUIREMENTS.md — this includes PROJECT.md's **Key Decisions table**, the primary source for cross-milestone decision recall: it records not just what was chosen but the **alternatives considered** and why they were rejected), From Prior Phases (per-phase decisions), and From Spike/Sketch Findings (validated patterns, landmines, design decisions).
 
 **Usage downstream:** `analyze_phase` skips already-decided gray areas; `present_gray_areas` annotates options ("You chose X in Phase 5"); `discuss_areas` pre-fills or flags conflicts.
 
@@ -298,7 +298,7 @@ Analyze the phase to identify gray areas. Use both `prior_decisions` and `codeba
 
    This list is MANDATORY in CONTEXT.md. Every ref must have a full relative path. If no external docs exist, note that explicitly.
 
-2. **Check prior decisions** — Scan `<prior_decisions>` for already-decided gray areas; mark them pre-answered.
+2. **Check prior decisions** — Scan `<prior_decisions>` for already-decided gray areas (both From Prior Phases in this milestone AND Project-Level cross-milestone decisions from PROJECT.md's Key Decisions table); mark them pre-answered. Cross-milestone decisions record rejected alternatives — use these to avoid re-litigating settled choices (e.g., if Whisper was chosen over Deepgram for transcription, don't surface "which transcription service?" as a gray area).
 
 2b. **SPEC.md awareness** — If `spec_loaded = true`: `<locked_requirements>` are pre-answered (Goal, Boundaries, Constraints, Acceptance Criteria). Do NOT generate gray areas about WHAT to build or WHY. Only generate gray areas about HOW to implement. When presenting, include: "Requirements are locked by SPEC.md — discussing implementation decisions only."
 
