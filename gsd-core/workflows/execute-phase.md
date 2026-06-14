@@ -1436,7 +1436,7 @@ NEXT_ACTION=$(printf '%s' "$VERIFICATION" | jq -r '.next_action' 2>/dev/null || 
 NEXT_COMMAND=$(printf '%s' "$VERIFICATION" | jq -r '.next_command' 2>/dev/null || echo "")
 ```
 
-Route on `$STATUS`: if `passed`, proceed to update_roadmap. Otherwise keep the phase pending — present `$NEXT_ACTION` to the user and, when `$NEXT_COMMAND` is non-empty, show it as the next command to run. The query covers all cases including missing files (`missing`) and unexpected values (`unknown`), so no per-status arm needs to be listed here.
+Route on `$STATUS`: if `passed`, proceed to simplify_phase_code. Otherwise keep the phase pending — present `$NEXT_ACTION` to the user and, when `$NEXT_COMMAND` is non-empty, show it as the next command to run. The query covers all cases including missing files (`missing`) and unexpected values (`unknown`), so no per-status arm needs to be listed here.
 
 **If human_needed:**
 
@@ -1532,6 +1532,41 @@ Also: `/gsd:verify-work {X} ${GSD_WS}` — manual testing first
 ```
 
 Gap closure cycle: `/gsd:plan-phase {X} --gaps ${GSD_WS}` reads VERIFICATION.md → creates gap plans with `gap_closure: true` → user runs `/gsd:execute-phase {X} --gaps-only ${GSD_WS}` → verifier re-runs.
+</step>
+
+<step name="simplify_phase_code">
+**Post-verification quality gate A — code simplification.**
+
+Runs only after `verify_phase_goal` returns `passed`. Cleans up the code the phase just produced while the diff is still small and well understood.
+
+Check whether this phase changed any code files:
+```bash
+git diff --stat HEAD~"${PLAN_COUNT:-1}"..HEAD -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.swift' 2>/dev/null
+```
+
+**If no code files changed, skip this step entirely** and proceed to `update_agent_knowledge`.
+
+Otherwise invoke the `/simplify` skill:
+```
+Skill(skill="simplify")
+```
+
+`/simplify` runs three parallel review agents (reuse, quality, efficiency) on the git diff and fixes the issues it finds, committing each cleanup atomically. Quality only — it does not hunt for bugs (that is `code_review_gate`'s job, which already ran).
+
+Then proceed to `update_agent_knowledge`.
+</step>
+
+<step name="update_agent_knowledge">
+**Post-verification quality gate B — capture learnings.**
+
+After simplification, write durable learnings from this phase into the project's CLAUDE.md while the conversation still holds full context of what was built and why (unlike milestone completion, which often runs in a fresh session):
+```
+Skill(skill="update-agent-knowledge")
+```
+
+Review the phase execution for patterns, gotchas, and conventions worth persisting, and fold the relevant ones into CLAUDE.md.
+
+Then proceed to `update_roadmap`.
 </step>
 
 <step name="update_roadmap">
