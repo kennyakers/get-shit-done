@@ -42,6 +42,35 @@ Features that seem good but create problems.
 | [feature] | [surface appeal] | [actual problems] | [better approach] |
 | [feature] | [surface appeal] | [actual problems] | [better approach] |
 
+### Critical Behaviors
+
+Behaviors that aren't features but matter for user experience. Research what users expect.
+
+**States and modes** — What modes does this type of product have?
+
+| State | User Expectation | Common Pattern |
+|-------|------------------|----------------|
+| Loading | [what users expect to see] | [skeleton, spinner, progressive] |
+| Empty | [what users expect] | [prompt, illustration, onboarding] |
+| Error | [what users expect] | [inline, toast, modal, retry] |
+| Offline | [what users expect] | [cached, disabled, queued] |
+| [domain-specific state] | [expectation] | [pattern] |
+
+**Failure handling** — What can go wrong and how do similar products handle it?
+
+| Failure | User Impact | Standard Handling |
+|---------|-------------|-------------------|
+| Network failure | [what breaks] | [retry, cache, queue] |
+| Auth expiry | [what breaks] | [refresh, re-login, preserve work] |
+| [domain-specific failure] | [impact] | [handling] |
+
+**Boundaries** — What limits do similar products enforce?
+
+| Boundary | Typical Limit | Rationale |
+|----------|---------------|-----------|
+| [limit type] | [value] | [why this limit] |
+| [limit type] | [value] | [why this limit] |
+
 ## Feature Dependencies
 
 ```
@@ -133,6 +162,13 @@ Features to defer until product-market fit is established.
 - Prevent scope creep by documenting what seems good but isn't
 - Include the alternative approach
 - Example: "Real-time everything" often creates complexity without value
+
+**Critical Behaviors:**
+- Research what users expect for states, failures, and limits — not just features
+- States: What do loading, empty, error, offline states look like in this domain?
+- Failures: How do similar products handle network drops, auth expiry, data conflicts?
+- Boundaries: What limits are standard? (file sizes, rate limits, timeouts)
+- These become behavioral requirements (When X, If Y fails, While Z)
 
 **Feature Dependencies:**
 - Critical for roadmap phase ordering

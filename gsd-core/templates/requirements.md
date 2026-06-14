@@ -81,6 +81,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Description: User-centric, testable, atomic
 - Checkbox: Only for v1 requirements (v2 are not yet actionable)
 
+**Behavioral Patterns (use when conditions matter):**
+
+Most requirements are simple: "User can [action]". But some behaviors need conditions to be clear. Use these patterns when the trigger, state, or failure case matters:
+
+| Pattern | When to Use | Example |
+|---------|-------------|---------|
+| `User can [action]` | Default — unconditional capability | User can create a post |
+| `When [event], [outcome]` | Response to trigger | When signup succeeds, user receives verification email |
+| `While [state], [behavior]` | During a mode/condition | While offline, app queues changes for sync |
+| `If [condition], [response]` | Error/edge handling | If login fails 3 times, account locks for 15 minutes |
+
+**When to use behavioral patterns:**
+- The requirement involves a trigger (login, timeout, payment, network change)
+- The requirement depends on state (offline, loading, premium, unverified)
+- The requirement handles failure (retry, notify, degrade, block)
+- The requirement has boundaries (limits, empty states, max capacity)
+
+**Don't over-apply:** Simple capabilities don't need conditions. "User can edit profile" is fine — you don't need "When user clicks edit, system shows edit form."
+
 **Categories:**
 - Derive from research FEATURES.md categories
 - Keep consistent with domain conventions
@@ -142,24 +161,29 @@ Which phases cover which requirements. Updated during roadmap creation.
 ### Authentication
 
 - [ ] **AUTH-01**: User can sign up with email and password
-- [ ] **AUTH-02**: User receives email verification after signup
+- [ ] **AUTH-02**: When signup succeeds, user receives verification email
 - [ ] **AUTH-03**: User can reset password via email link
 - [ ] **AUTH-04**: User session persists across browser refresh
+- [ ] **AUTH-05**: If login fails 3 times, account locks for 15 minutes
+- [ ] **AUTH-06**: While unverified, user can browse but not post
 
 ### Profiles
 
 - [ ] **PROF-01**: User can create profile with display name
-- [ ] **PROF-02**: User can upload avatar image
+- [ ] **PROF-02**: User can upload avatar image (max 5MB)
 - [ ] **PROF-03**: User can write bio (max 500 chars)
 - [ ] **PROF-04**: User can view other users' profiles
+- [ ] **PROF-05**: If avatar upload fails, user sees error with retry option
 
 ### Content
 
 - [ ] **CONT-01**: User can create text post
-- [ ] **CONT-02**: User can upload image with post
-- [ ] **CONT-03**: User can edit own posts
+- [ ] **CONT-02**: User can upload image with post (max 10MB)
+- [ ] **CONT-03**: User can edit own posts within 24 hours
 - [ ] **CONT-04**: User can delete own posts
 - [ ] **CONT-05**: User can view feed of posts
+- [ ] **CONT-06**: While feed is loading, user sees skeleton placeholders
+- [ ] **CONT-07**: If feed is empty, user sees prompt to follow users
 
 ### Social
 
@@ -203,15 +227,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-02 | Phase 1 | Pending |
 | AUTH-03 | Phase 1 | Pending |
 | AUTH-04 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| AUTH-06 | Phase 1 | Pending |
 | PROF-01 | Phase 2 | Pending |
 | PROF-02 | Phase 2 | Pending |
 | PROF-03 | Phase 2 | Pending |
 | PROF-04 | Phase 2 | Pending |
+| PROF-05 | Phase 2 | Pending |
 | CONT-01 | Phase 3 | Pending |
 | CONT-02 | Phase 3 | Pending |
 | CONT-03 | Phase 3 | Pending |
 | CONT-04 | Phase 3 | Pending |
 | CONT-05 | Phase 3 | Pending |
+| CONT-06 | Phase 3 | Pending |
+| CONT-07 | Phase 3 | Pending |
 | SOCL-01 | Phase 4 | Pending |
 | SOCL-02 | Phase 4 | Pending |
 | SOCL-03 | Phase 4 | Pending |
@@ -219,8 +248,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SOCL-05 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 18 total
-- Mapped to phases: 18
+- v1 requirements: 23 total
+- Mapped to phases: 23
 - Unmapped: 0 ✓
 
 ---
