@@ -100,6 +100,42 @@ Troubleshooting? See [docs/how-to/recover-and-troubleshoot.md](docs/how-to/recov
 
 ---
 
+## Fork Customizations
+
+This is [kennyakers](https://github.com/kennyakers)' fork of [open-gsd/gsd-core](https://github.com/open-gsd/gsd-core). It layers a few workflow enhancements on top of upstream:
+
+### EARS-Inspired Behavioral Requirements
+
+Standard requirements capture features ("User can upload avatar"). Behavioral patterns capture what happens in different states:
+
+- `When [event], [outcome]` — "When signup succeeds, user receives verification email"
+- `While [state], [behavior]` — "While offline, app queues changes for sync"
+- `If [condition], [response]` — "If login fails 3 times, account locks for 15 minutes"
+
+A behavioral questioning checklist surfaces these states, triggers, failures, and boundaries during discovery.
+
+- `gsd-core/templates/requirements.md` — pattern reference and examples
+- `gsd-core/references/questioning.md` — behavioral checklist for discovery
+- `gsd-core/templates/research-project/FEATURES.md` — critical behaviors research
+
+### Execute-Phase Quality Gates
+
+After phase verification passes, the `execute-phase` workflow runs two post-verification gates before updating the roadmap:
+
+1. **`/simplify`** — three parallel review agents (reuse, quality, efficiency) clean up the phase's changed code and commit each fix atomically. Skipped when no code changed.
+2. **`/update-agent-knowledge`** — captures learnings into the project's CLAUDE.md while the conversation still has full context of what was built and why.
+
+- `gsd-core/workflows/execute-phase.md`
+
+### Rejected-Alternatives Decision Recall
+
+The PROJECT.md Key Decisions table carries an **Alternatives Considered** column, so future milestones can see not just what was chosen but what was rejected and why — avoiding re-litigation of settled choices in `discuss-phase`.
+
+- `gsd-core/templates/project.md`, `gsd-core/workflows/new-project.md`
+- `gsd-core/workflows/complete-milestone.md`, `transition.md`, `discuss-phase.md`
+
+---
+
 ## Star History
 
 <a href="https://star-history.com/#open-gsd/gsd-core&Date">
